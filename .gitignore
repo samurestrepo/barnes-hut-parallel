@@ -1,0 +1,46 @@
+# --- Generated particle data (regenerate with common/gen.py + seed) ---
+data/*
+!data/.gitkeep
+!data/uniform_N2000_s42.txt
+
+# --- Simulation outputs (keep only CSV summaries and plots in results/) ---
+*_acc0.txt
+*_final.txt
+results/**/*.txt
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# --- Numba cache ---
+*.nbi
+*.nbc
+
+# --- C / CUDA build artifacts ---
+*.o
+*.obj
+*.out
+*.exe
+*.a
+*.so
+c_omp/bh_omp
+c_core/bh
+cuda/bh_cuda
+
+# --- Editors and OS ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- Secrets: never commit ---
+.env
+*.pem
+*.key
