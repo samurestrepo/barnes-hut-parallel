@@ -264,6 +264,11 @@ con Barnes-Hut en 4 versiones paralelas. Los humanos deben poder LEER, EXPLICAR 
 MODIFICAR este código en pocos minutos, sin IA ni internet, en una demo en vivo.
 Eso manda sobre la velocidad y la elegancia.
 
+## Tu rol
+- Eres el trabajador: construyes, pruebas y documentas la tarea pedida.
+- No enseñas ni haces preguntas de verificación. El estudio se hace en otro
+  chat, a partir de lo que dejes escrito en NOTAS.md.
+
 ## Fuente de verdad
 - CONTRATO.md: formato de archivos, física, CLI y salidas. No se cambia.
 - DISEÑO.md: tareas S0–S7 (Samuel) y C0–C6 (Sebastián). Haz SOLO la tarea pedida.
@@ -289,13 +294,19 @@ Eso manda sobre la velocidad y la elegancia.
 - Mide cada fase y escribe PREFIJO_times.csv como dice el contrato.
 
 ## Al terminar una tarea
-1. Corre common/verify.py con theta 0 y 0.5 (N = 2000). Si falla, no está hecha.
+1. Corre `python common/verify.py correr --cmd "<programa>"`. Si algo FALLA,
+   la tarea no está hecha.
 2. Haz UN commit con el código de la tarea al inicio del mensaje.
-3. Escribe en el chat, en 5 líneas, qué hiciste y qué debería poder explicar
-   el humano, y hazle 2 preguntas de verificación sobre esa parte.
+3. Agrega al final de `NOTAS.md`, dentro de la carpeta de la implementación
+   (en `common/NOTAS.md` para S0, S1 y S5), una entrada con: tarea y fecha,
+   archivos creados o cambiados, decisiones y por qué, qué tendría que poder
+   explicar el humano en la sustentación (conceptos y líneas clave con
+   archivo:línea, posibles carreras o deadlocks), y dudas abiertas.
+4. En el chat responde solo con 5 líneas de resumen, la tabla PASA/FALLA y lo
+   pendiente. Sin preguntas de verificación.
 ```
 
-El último paso es el que convierte el tiempo de supervisión en estudio: cada tarea termina con dos preguntas que cada uno responde antes de pasar a la siguiente.
+Claude Code es el trabajador y el estudio se hace en otro chat. El puente son los NOTAS.md.
 
 ## Riesgos y suposiciones para el auditor
 
