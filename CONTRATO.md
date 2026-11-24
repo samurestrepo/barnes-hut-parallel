@@ -47,6 +47,8 @@ E = \sum_i \tfrac{1}{2} m_i |v_i|^2 \; - \sum_{i<j} \frac{G\, m_i m_j}{\sqrt{|r_
 | `PREFIJO_final.txt` | N×7 estado tras S pasos, **en el orden de la entrada** | energía final |
 | `PREFIJO_times.csv` | `fase,segundos` con `lectura, construccion, ordenamiento, recorrido, integracion, comunicacion, total` | informe y gráficas |
 
+**Formato numérico:** `acc0.txt` y `final.txt` se escriben con 17 cifras significativas, `%.17g` (en C `fprintf(f, "%.17g ", x)`; en NumPy `np.savetxt(..., fmt="%.17g")`), separadas por espacio. Con menos cifras el redondeo del texto (~5e-7 con `%.6e`) ya roza los umbrales de 1e-6 del verificador. Fijado el 24-nov (ver `CONTRATO_DUDAS.md`).
+
 Ojo: casi todas las versiones reordenan las partículas por Morton. Hay que guardar el índice original y devolverlas a su orden antes de escribir. Si no, el verificador falla aunque la física esté bien.
 
 **Correcta = pasa `common/verify.py` (criterios iniciales, a ajustar con mediciones):**
