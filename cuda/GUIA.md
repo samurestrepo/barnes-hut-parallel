@@ -37,9 +37,9 @@ python common/verify.py correr --cmd "./cuda/bh_cuda" --float32 --workers 128
 
 ## 4. Tres preguntas de predicción
 
-1. **¿Qué pasa con `ORDEN_HILOS=original`?** Sube el tiempo de `recorrido`: los 32 hilos de un warp ejecutan la misma instrucción a la vez; si cada uno recorre el árbol distinto, el warp hace la unión de todos los caminos y espera al más largo. Con `morton` los vecinos abren casi las mismas celdas. *(Número: celda 5 del notebook.)*
-2. **¿Qué fase domina con N = 200 000?** Se espera que `construccion` (CPU + copias) sea una parte grande porque es secuencial, mientras el recorrido se reparte en miles de hilos. *(Confirmar con la celda 5.)*
-3. **¿64, 128 o 256 hilos por bloque?** Diferencias pequeñas: el recorrido usa muchos registros y memoria local, y la ocupación cambia poco. *(Celda 6.)*
+1. **¿Qué pasa con `ORDEN_HILOS=original`?** Sube el tiempo de `recorrido`: los 32 hilos de un warp ejecutan la misma instrucción a la vez; si cada uno recorre el árbol distinto, el warp hace la unión de todos los caminos y espera al más largo. Con `morton` los vecinos abren casi las mismas celdas. Medido con N = 200 000: 1.77 → 6.28 s (`uniform`), 3.6 veces más lento.
+2. **¿Qué fase domina con N = 200 000?** El `recorrido` (1.77 s de 2.30 s con `morton`). La `construccion` en la CPU con las copias es la segunda (0.27 s, ≈ 12%): es la parte secuencial, y por Amdahl limita la mejora a ≈ 8 aunque el recorrido fuera instantáneo.
+3. **¿64, 128 o 256 hilos por bloque?** Casi igual: recorrido 1.88, 1.81 y 1.80 s. El recorrido está limitado por las lecturas dispersas del árbol y la pila en memoria local, no por la ocupación.
 
 ## 5. Qué se ve en el monitor
 

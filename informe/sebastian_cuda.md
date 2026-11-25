@@ -1,6 +1,6 @@
 # Barnes-Hut en CUDA
 
-*Borrador sin pulir. Los números se completan con el notebook ejecutado en Colab (`cuda/bh_cuda.ipynb`, GPU T4) y `results/cuda/`.*
+*Números de `cuda/bh_cuda.ipynb` ejecutado en Colab (Tesla T4, CUDA 13.0) el 25 de noviembre y de `results/cuda/`.*
 
 ## Diseño
 
@@ -17,19 +17,22 @@ Sin memoria compartida ni `__syncthreads()`: cada hilo tiene su pila y escribe s
 
 ## Verificación
 
-*(Celda 3 del notebook)* `common/verify.py correr --float32 --workers 128`: fuerzas con θ = 0, ___; θ = 0.5, ___; trayectoria, ___; energía en reposo, ___; energía en movimiento, ___. `compute-sanitizer --tool memcheck`: ___ errores.
+`common/verify.py correr --float32 --workers 128` pasa las 5 pruebas: fuerzas con θ = 0, 1.68e-5 (umbral 1e-3); θ = 0.5, mediana 1.72e-3; trayectoria, 3.83e-7; energía en reposo, 6.62e-8; energía en movimiento, 6.14e-3 (umbral 2e-2, el mismo valor que la versión en C). `compute-sanitizer --tool memcheck`: 0 errores. `racecheck`: 0 hazards, como se esperaba sin `__shared__`.
 
 ## Rendimiento
 
-*(Celdas 5 y 6)* N = 200 000, 20 pasos, 128 hilos por bloque:
+N = 200 000, 20 pasos, 128 hilos por bloque (`results/cuda/*_times.csv`). En segundos; el total no cuenta la lectura del archivo (0.7 a 1.3 s).
 
 | Distribución | Orden | ordenamiento | construcción | recorrido | integración | total |
 | --- | --- | --- | --- | --- | --- | --- |
-| uniform | morton | | | | | |
-| uniform | original | | | | | |
-| corner | morton | | | | | |
-| corner | original | | | | | |
+| uniform | morton | 0.033 | 0.274 | 1.768 | 0.002 | 2.30 |
+| uniform | original | 0.025 | 0.209 | 6.282 | 0.002 | 6.72 |
+| corner | morton | 0.025 | 0.285 | 2.016 | 0.002 | 2.84 |
+| corner | original | 0.024 | 0.247 | 7.261 | 0.002 | 8.07 |
 
-Tamaño de bloque (64, 128, 256): ___.
+Tamaño de bloque (`uniform`, `results/cuda/uniform_N200000_bloques_bench.csv`): recorrido 1.88 s con 64 hilos, 1.81 s con 128 y 1.80 s con 256.
 
-Análisis a completar: qué fracción es la construcción en la CPU con las copias (la parte secuencial, que limita el speedup como en Amdahl), cuánto empeora el recorrido con `original` (divergencia) y comparación con OpenMP en la misma N.
+- **Divergencia.** Con `original` el recorrido es 3.6 veces más lento en las dos distribuciones. Las partículas, el árbol y las interacciones son los mismos; solo cambia qué partículas comparten warp.
+- **Fracción secuencial.** Con `morton`, la construcción en la CPU con sus copias es ≈ 12% del tiempo en `uniform` y ≈ 10% en `corner`. Aunque el recorrido fuera instantáneo, Amdahl limita la mejora a ≈ 8–10. Es lo primero que habría que llevar a la GPU.
+- **Tamaño de bloque.** Casi no influye: el recorrido está limitado por las lecturas dispersas del árbol y la pila en memoria local, no por cuántos warps caben en cada multiprocesador.
+- **Contra OpenMP.** En la misma prueba (`uniform`, N = 200 000, 20 pasos), OpenMP con 16 hilos en el i7-11800H tarda 7.67 s sin la lectura (recorrido 6.9 s); la T4 con `morton`, 2.30 s (recorrido 1.77 s, 3.9 veces menos). Con `original` la GPU tarda 6.72 s, casi lo mismo que la CPU: el orden de los hilos importa tanto como el hardware. El secuencial tarda 45.1 s sin lectura, así que la T4 con `morton` es ≈ 20 veces más rápida que el secuencial.
