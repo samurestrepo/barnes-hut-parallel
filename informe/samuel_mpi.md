@@ -16,7 +16,7 @@ Todas las colectivas usan búferes de NumPy y se llaman en el mismo orden en tod
 
 ## Verificación
 
-Con `mpiexec -n 1`, `2` y `4`: fuerzas con θ = 0, 1.5e-14; con θ = 0.5, mediana 3.2e-3 a 3.3e-3; trayectoria, 2.8e-17; energía en reposo, 3.4e-8. Con θ = 0 las salidas son idénticas bit a bit a la versión secuencial. La energía en movimiento da 8.9e-3 a 9.0e-3 frente al umbral provisional de 1e-3, el mismo caso que la versión secuencial (ver la sección de multiprocessing y `CONTRATO_DUDAS.md`).
+Con `mpiexec -n 1`, `2` y `4`: fuerzas con θ = 0, 1.5e-14; con θ = 0.5, mediana 3.2e-3 a 3.3e-3; trayectoria, 2.8e-17; energía en reposo, 3.4e-8. Con θ = 0 las salidas son idénticas bit a bit a la versión secuencial. La energía en movimiento da 8.9e-3 a 9.0e-3, bajo el umbral de 2e-2 fijado con la versión secuencial (ver la sección de multiprocessing y `CONTRATO_DUDAS.md`). Pasan las 5 pruebas con 1, 2 y 4 rangos.
 
 ## Comunicación: ramas podadas frente al árbol completo
 

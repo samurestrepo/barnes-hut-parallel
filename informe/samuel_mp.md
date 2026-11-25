@@ -15,7 +15,7 @@ No hay candados: cada trozo escribe filas distintas de la aceleración, y el `fo
 
 ## Verificación
 
-Con 1 y 4 procesos, en los dos modos, las salidas son idénticas bit a bit a las de la versión secuencial: fuerzas con θ = 0, error relativo máximo 1.5e-14; con θ = 0.5, mediana 3.3e-3; trayectoria de 10 pasos, 2.8e-17; energía en reposo, 3.4e-8. La prueba de energía en movimiento da 8.9e-3 frente al umbral provisional de 1e-3. No es un error de integración: con θ = 0 da 4.0e-4, igual que la suma directa, y a tiempo físico fijo no baja al reducir dt (`results/py_core/deriva_energia.csv`). Se propuso un umbral de 2e-2 (`CONTRATO_DUDAS.md`).
+Con 1 y 4 procesos, en los dos modos, las salidas son idénticas bit a bit a las de la versión secuencial: fuerzas con θ = 0, error relativo máximo 1.5e-14; con θ = 0.5, mediana 3.3e-3; trayectoria de 10 pasos, 2.8e-17; energía en reposo, 3.4e-8. La prueba de energía en movimiento da 8.9e-3. El umbral inicial (1e-3) era una suposición y se fijó en 2e-2 con estas mediciones: con θ = 0 la misma prueba da 4.0e-4, igual que la suma directa, y a tiempo físico fijo la deriva no baja al reducir dt, así que es el error de la aproximación de Barnes-Hut y no del integrador (`results/py_core/deriva_energia.csv`, `CONTRATO_DUDAS.md`). Con 2e-2 un leapfrog sin el segundo medio kick sigue fallando (2.0e-1). Con ese umbral pasan las 5 pruebas.
 
 ## Rendimiento
 
