@@ -1,0 +1,7 @@
+# Windows-10-10.0.19045-SP0 | Python 3.14.7 | os.cpu_count() = 4
+L2CacheSize=512
+L3CacheSize=3072
+MaxClockSpeed=2501
+Name=Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz
+NumberOfCores=2
+NumberOfLogicalProcessors=4
