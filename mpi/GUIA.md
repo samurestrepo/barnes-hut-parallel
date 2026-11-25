@@ -31,6 +31,8 @@ mpiexec -n 4 python mpi/bh_mpi.py --particion cantidad --input data/uniform_N200
 | espera activa de MS-MPI | `MPICH_PROGRESS_SPIN_LIMIT` (`:29`) | con 0 (sin límite) y 8 rangos, 9.6 s en vez de 2.3 s |
 | dt, ε | `--dt`, `--eps` (`:354`, `:356`) | con `corner`/`clusters` usar dt = 2.5e-4 |
 
+**Probado** (`results/perillas/README.md`, uniform N = 20 000, 20 pasos): `mpiexec -n 4 ... --theta 1.0` → 0.78 s en vez de 1.91 s, bytes 21.5% del árbol completo en vez de 30.9%, error 1.8e-2 en vez de 2.5e-3. `--particion espacio` con `corner` → 4.75 s en vez de 2.40 s. `mpiexec -n 8` → 2.27 s (no mejora a 4).
+
 ## 4. Tres preguntas de predicción
 
 1. **¿Qué pasa de 4 a 8 rangos?** Empeora un poco (2.09 → 2.27 s): 8 rangos en 4 hilos de hardware, y la comunicación sube de 0.30 a 0.94 s porque hay más rangos que esperar y más ramas que intercambiar (33 MB contra 16 MB).

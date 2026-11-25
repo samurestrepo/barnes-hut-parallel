@@ -33,6 +33,8 @@ python py_mp/bh_mp.py --tree shared --workers 4 --input data/uniform_N20000_s42.
 | trozos por proceso | `TROZOS_POR_PROCESO = 6` (`:40`) | 1 = un trozo por proceso (reparto estático); con `corner` igual queda parejo (1.82–1.84 s) |
 | dt, ε | `--dt`, `--eps` (`:234`, `:236`) | con `corner`/`clusters` usar dt = 2.5e-4 |
 
+**Probado** (`results/perillas/README.md`, uniform N = 20 000, 20 pasos, 4 procesos): `--theta 1.0` → 0.69 s en vez de 1.81 s, 5.4× menos interacciones, error 1.7e-2 en vez de 1.9e-3. `--tree local` → 1.87 s (con 8 procesos 2.33 s frente a 1.92 s). `--workers 8` → 1.92 s, no mejora.
+
 ## 4. Tres preguntas de predicción
 
 1. **¿Qué pasa de 4 a 8 procesos?** Empeora un poco (shared 2.04 → 2.18 s): la máquina tiene 4 hilos de hardware, así que 8 procesos se turnan, y crear el Pool sube de 3.8 a 7.2 s.
