@@ -1,0 +1,7 @@
+serie,trabajadores,total_s,speedup,eficiencia,karp_flatt
+mp_shared,1,27.5056,1.030,1.030,nan
+mp_shared,2,15.2758,1.855,0.928,0.0779
+mp_shared,4,9.0646,3.127,0.782,0.0931
+mp_shared,8,6.6661,4.252,0.531,0.1259
+mp_shared,16,5.1037,5.553,0.347,0.1254
+mp_shared,32,5.2304,5.419,0.169,0.1582

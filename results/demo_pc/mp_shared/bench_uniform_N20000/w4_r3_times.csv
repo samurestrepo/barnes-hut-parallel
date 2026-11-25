@@ -1,0 +1,9 @@
+fase,segundos
+lectura,0.025187
+construccion,0.017033
+ordenamiento,0.064526
+recorrido,0.545725
+integracion,0.006629
+comunicacion,0.003369
+total,0.667269
+crear_pool,0.435961
