@@ -11,24 +11,14 @@ cada trozo escribe filas distintas de la aceleración, y terminar de consumir `i
 de barrera antes de integrar. El `Pool` se crea una sola vez y la memoria compartida se libera en
 un `finally`.
 
-**Compartir o reconstruir el árbol** (lo que pide el enunciado, decidido con mediciones):
+**Compartir o reconstruir el árbol** (lo que pide el enunciado). Con `--tree shared` el principal
+construye el árbol y lo copia a memoria compartida (≈ 0.3 ms por paso); los trabajadores lo leen
+sin copiarlo. Con `--tree local` cada trabajador reconstruye el mismo árbol en cada paso: la
+construcción se repite P veces y los procesos compiten por la memoria (ver Mediciones comunes).
+`shared` gana o empata en todos los casos medidos y es el modo por defecto.
 
-- `--tree shared`: el principal construye el árbol y lo copia a memoria compartida; los
-  trabajadores lo leen sin copiarlo. Cuesta ≈ 0.3 ms por paso.
-- `--tree local`: cada trabajador reconstruye el mismo árbol en cada paso. Con N = 200 000 la
-  construcción pasa de 1.4 s con 1 proceso a 4.7 s con 8, porque se repite P veces y los procesos
-  compiten por la memoria.
-
-`shared` gana o empata en todos los casos medidos y es el modo por defecto
-(`results/mp/uniform_N*_bench.csv`).
-
-**Hallazgos.**
-
-- **El mayor sobrecosto es crear el `Pool`**: de 1.8 a 7.2 s según el número de procesos, porque
-  cada proceso arranca de cero (*spawn* en Windows) e importa NumPy y Numba. Por eso se crea una
-  vez y no en cada paso. Por la cola solo viajan tuplas pequeñas (índices de trozo).
-- **Balanceo**: con `corner` y 4 procesos los trabajadores terminan dentro del 1–2% en tiempo e
-  interacciones (`results/mp/corner_N20000_shared_w4_workers.csv`), y sigue parejo a 100 pasos,
-  cuando el rincón ya colapsó (11.11–11.17 s, `results/demo/`).
-
-*(Escalado en el computador de la demo: ver Mediciones comunes.)*
+**Hallazgos.** Crear el `Pool` es el mayor sobrecosto (cada proceso importa NumPy y Numba), por eso
+se crea una sola vez. Repartir los trozos también cuesta en cada paso: la fase `recorrido` incluye
+ese reparto, y con θ = 1.0 en 8 trabajadores el cálculo baja de 0.36 a 0.09 s mientras `recorrido`
+se queda en ≈ 0.42 s. Con `corner` el reparto dinámico deja a los trabajadores dentro del 1–2%,
+también a 100 pasos, cuando el rincón ya colapsó (`results/mp/`, `results/demo_pc/ensayo/`).

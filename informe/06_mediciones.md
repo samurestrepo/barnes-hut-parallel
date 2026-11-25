@@ -2,8 +2,8 @@
 
 **Método.** CPU en el computador de la demo (i7-11800H, 8 núcleos físicos / 16 hilos, WSL2,
 Open MPI 5.0.10; `results/demo_pc/`, `results/omp/`); CUDA en Colab (T4, desglose en su sección).
-`uniform`, θ = 0.5, 20 pasos; 3 repeticiones con N = 20 000 y una con 200 000. Todo desde el disco
-de WSL: desde `/mnt/c` la lectura de 200 000 partículas pasa de 0.41 s a 14.3 s.
+`uniform`, θ = 0.5, 20 pasos; 3 repeticiones con N = 20 000 y una con 200 000.Todo desde el disco de
+WSL (ver `/mnt/c` en OpenMP).
 
 **Cada versión contra el T1 de su lenguaje.** S2 tarda 1.92 / 28.3 s (N = 20 000 / 200 000) y C1
 3.69 / 45.5 s. Python no es más rápido: hace menos trabajo (197 frente a 440 millones de
@@ -12,12 +12,10 @@ explicada en Verificación. Por interacción, C es 1.2–1.3 veces más rápido.
 
 ![](results/demo_pc/conjunta_N20000_escalado.png){width=72%}\
 
-*Figura 1. Escalado con N = 20 000; la de N = 200 000 está en
-`results/demo_pc/conjunta_N200000_escalado.png`. Línea punteada: 8 núcleos físicos.*
+*Figura 1. Escalado con N = 20 000 (N = 200 000: `results/demo_pc/conjunta_N200000_escalado.png`).*
 
 **Hasta 8.** Speedup con 8 y N = 200 000: OpenMP 4.50, mp shared 4.25, mp local 3.99, MPI 3.58
-(N = 20 000: 5.42, 4.12, 3.52, 3.13). En eficiencia, mp shared queda a la par de OpenMP (0.53
-frente a 0.56).
+(N = 20 000: 5.42, 4.12, 3.52, 3.13).
 
 **Más procesos o hilos que núcleos.** Con N = 20 000 OpenMP sube de 8 a 16 (hyperthreading) y las
 de Python bajan: hay ≈ 0.5 s de cálculo y el reparto pesa. Con 200 000, mp shared y MPI mejoran
