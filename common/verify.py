@@ -45,9 +45,11 @@ PRUEBAS = {
                         medida="trayectoria", umbral=(1e-6, 1e-3)),
     "energia_reposo": dict(datos=DATOS_UNIFORM, theta=0.0, dt=1e-3, pasos=100,
                            medida="energia", umbral=(1e-5, 1e-3)),
-    # Suposición del diseño (riesgo 3): umbral a ajustar con S2 y dejar fijo.
+    # Umbral fijado con S2 (24-nov, aprobado por Samuel): Barnes-Hut con θ = 0.5 da ≈ 8.9e-3 por
+    # el error de la aproximación (con θ = 0 da 4.0e-4, como la suma directa). 2e-2 deja margen y
+    # sigue atrapando el leapfrog sin segundo medio kick (2.0e-1). Ver CONTRATO_DUDAS.md.
     "energia_movimiento": dict(datos=DATOS_MOVIMIENTO, theta=0.5, dt=2.5e-4, pasos=100,
-                               medida="energia", umbral=(1e-3, 1e-3)),
+                               medida="energia", umbral=(2e-2, 2e-2)),
 }
 FASES = ["lectura", "construccion", "ordenamiento", "recorrido", "integracion", "comunicacion", "total"]
 
