@@ -37,11 +37,30 @@ Plain text, N rows × 7 columns: `x y z vx vy vz m`. Generate test inputs with:
 python common/gen.py --dist uniform --n 20000 --seed 42
 ```
 
+## How to run
+
+Requirements: Python 3 with NumPy, Numba and mpi4py; OpenMPI (`mpirun`); gcc with OpenMP; for CUDA, Google Colab with a T4 GPU. On Windows, use WSL2 and keep the repository on the WSL disk (`~/`), not under `/mnt/c`: reading input from `/mnt/c` is about 35× slower and distorts every measurement.
+
+All versions share the same command line: `--input F --steps S --dt 0.001 --theta 0.5 --eps 0.01 --workers K --out PREFIX`.
+
+```bash
+python common/gen.py --dist corner --n 20000                      # also: uniform, clusters --vel 0.3 --masas aleatorias
+python py_core/bh_core.py --input data/corner_N20000_s42.txt --steps 20 --dt 2.5e-4 --out /tmp/s2
+python py_mp/bh_mp.py --tree shared --workers 8 ...                # --tree shared | local
+mpirun --oversubscribe -n 8 python mpi/bh_mpi.py --particion cantidad ...   # --particion cantidad | espacio
+make -C c_omp && OMP_SCHEDULE="dynamic,64" ./c_omp/bh_omp --workers 8 ...   # OMP_SCHEDULE=static to compare
+make -C cuda && ORDEN_HILOS=morton ./cuda/bh_cuda --workers 128 ...         # in Colab: cuda/bh_cuda.ipynb
+```
+
+Check a version with `python common/verify.py correr --cmd "<program>"` (add `--float32` for CUDA). Measure scaling with `common/bench.py` and plot it with `common/plot.py`.
+
+Each implementation folder has a one-page `GUIA.md` (what is parallel, where races or deadlocks could occur, where each demo knob lives) and a `NOTAS.md` log. The report is assembled from `informe/` with `bash informe/armar.sh`.
+
 ## Status
 
-Work in progress (November 2026). Each implementation is developed on its own branch (`impl/<name>`) and merged into `main` once it passes the verifier.
+All four versions pass the verifier and are merged into `main` (November 2026). Each one was developed on its own branch (`impl/<name>`) and merged through a pull request without squashing.
 
 ## Authors
 
 - Samuel Restrepo Ramírez
-- Sebastián
+- Sebastián Molina Escobar
