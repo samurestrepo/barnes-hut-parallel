@@ -1,0 +1,10 @@
+fase,segundos
+lectura,0.026277
+construccion,0.074045
+ordenamiento,0.020162
+recorrido,0.605085
+integracion,0.005910
+comunicacion,0.146762
+total,0.799674
+bytes_recibidos,16332160
+bytes_arbol_completo,52867200

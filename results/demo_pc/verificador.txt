@@ -1,0 +1,172 @@
+=================================================================
+$ python common/verify.py correr --cmd "python py_core/bh_core.py" 
+# 2026-11-25T15:03:47-05:00
+versión: python py_core/bh_core.py
+salidas en: /tmp/verify_gp_qrz5y
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [2.3 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [1.9 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [2.3 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [4.0 s]
+escrito data/clusters_N2000_s42_v_m.txt (2000 partículas)
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [2.6 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "python py_mp/bh_mp.py --tree shared" --workers 1
+# 2026-11-25T15:04:02-05:00
+versión: python py_mp/bh_mp.py --tree shared
+salidas en: /tmp/verify_0wwzm123
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [2.5 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [0.9 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.3 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [3.3 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [1.7 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "python py_mp/bh_mp.py --tree shared" --workers 4
+# 2026-11-25T15:04:13-05:00
+versión: python py_mp/bh_mp.py --tree shared
+salidas en: /tmp/verify_io4667nx
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [0.9 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [1.0 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.0 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.2 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [2.1 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "python py_mp/bh_mp.py --tree shared" --workers 8
+# 2026-11-25T15:04:22-05:00
+versión: python py_mp/bh_mp.py --tree shared
+salidas en: /tmp/verify_fyyoqb1p
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [1.0 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [1.0 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.2 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.9 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [3.1 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "python py_mp/bh_mp.py --tree local" --workers 1
+# 2026-11-25T15:04:33-05:00
+versión: python py_mp/bh_mp.py --tree local
+salidas en: /tmp/verify_pm3f0smv
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [0.9 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [1.0 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.1 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [3.3 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [1.8 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "python py_mp/bh_mp.py --tree local" --workers 4
+# 2026-11-25T15:04:43-05:00
+versión: python py_mp/bh_mp.py --tree local
+salidas en: /tmp/verify_qgvlijig
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [1.1 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [0.9 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.1 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.1 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [2.0 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "python py_mp/bh_mp.py --tree local" --workers 8
+# 2026-11-25T15:04:51-05:00
+versión: python py_mp/bh_mp.py --tree local
+salidas en: /tmp/verify_czkhjrz4
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [1.0 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [1.1 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.2 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.7 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [3.2 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+FIN_VERIF_PY
+=================================================================
+$ python common/verify.py correr --cmd "mpirun --oversubscribe -n 1 python mpi/bh_mpi.py"
+# 2026-11-25T15:27:32-05:00
+versión: mpirun --oversubscribe -n 1 python mpi/bh_mpi.py
+salidas en: /tmp/verify_8gv_3r0f
+
+fuerzas_directa      FALLA         nan < 1e-06    salió con código 1: 
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [2.5 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [0.9 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.9 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [1.4 s]
+
+RESULTADO: FALLA al menos una prueba
+# código de salida: 1
+=================================================================
+$ python common/verify.py correr --cmd "mpirun --oversubscribe -n 2 python mpi/bh_mpi.py"
+# 2026-11-25T15:27:42-05:00
+versión: mpirun --oversubscribe -n 2 python mpi/bh_mpi.py
+salidas en: /tmp/verify__dvfis_k
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [0.9 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [0.8 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.1 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.3 s]
+energia_movimiento   PASA     8.90e-03 < 2e-02    deriva de energía (100 pasos)  [1.3 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "mpirun --oversubscribe -n 4 python mpi/bh_mpi.py"
+# 2026-11-25T15:27:50-05:00
+versión: mpirun --oversubscribe -n 4 python mpi/bh_mpi.py
+salidas en: /tmp/verify_c3p8mk70
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [1.2 s]
+fuerzas_bh           PASA     3.24e-03 < 1e-02    mediana error relativo de a  [1.1 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.2 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.0 s]
+energia_movimiento   PASA     8.98e-03 < 2e-02    deriva de energía (100 pasos)  [1.4 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+=================================================================
+$ python common/verify.py correr --cmd "mpirun --oversubscribe -n 8 python mpi/bh_mpi.py"
+# 2026-11-25T15:27:59-05:00
+versión: mpirun --oversubscribe -n 8 python mpi/bh_mpi.py
+salidas en: /tmp/verify_xiz2gfnu
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [1.5 s]
+fuerzas_bh           PASA     3.42e-03 < 1e-02    mediana error relativo de a  [1.4 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [1.6 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.4 s]
+energia_movimiento   PASA     8.86e-03 < 2e-02    deriva de energía (100 pasos)  [1.8 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
+FIN_VERIF_MPI
+=================================================================
+# REPETICIÓN de n=1 (la primera corrida falló en fuerzas_directa sin mensaje; ver README)
+$ python common/verify.py correr --cmd "mpirun --oversubscribe -n 1 python mpi/bh_mpi.py"
+# 2026-11-25T15:32:26-05:00
+versión: mpirun --oversubscribe -n 1 python mpi/bh_mpi.py
+salidas en: /tmp/verify_3d8bm2e7
+
+fuerzas_directa      PASA     1.49e-14 < 1e-06    error relativo máximo de a  [0.7 s]
+fuerzas_bh           PASA     3.25e-03 < 1e-02    mediana error relativo de a  [0.7 s]
+trayectoria          PASA     2.78e-17 < 1e-06    error máximo de posición  [0.9 s]
+energia_reposo       PASA     3.37e-08 < 1e-05    deriva de energía (100 pasos)  [2.9 s]
+energia_movimiento   PASA     8.87e-03 < 2e-02    deriva de energía (100 pasos)  [1.3 s]
+
+RESULTADO: PASA todo
+# código de salida: 0
