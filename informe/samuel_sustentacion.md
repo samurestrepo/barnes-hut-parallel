@@ -76,13 +76,16 @@ Solo el mapa: archivo:línea y una frase de qué hace. Orden sugerido de estudio
 | `mpi/bh_mpi.py:152` | Colectivas 3–5: `Gather` y `Gatherv` de partículas y códigos al rango 0. |
 | `mpi/bh_mpi.py:172` | La parte secuencial: el rango 0 ordena por Morton. |
 | `mpi/bh_mpi.py:179` | Colectivas 6–8: `Scatter` y `Scatterv`; los demás esperan aquí mientras el 0 ordena. |
+| `mpi/bh_mpi.py:182` | `PARALELO`: `Scatterv`, cada rango recibe su trozo contiguo en orden Morton. |
 | `mpi/bh_mpi.py:188` | Un reparto completo: caja global, Morton, juntar en el 0, repartir. |
 | `mpi/bh_mpi.py:210` | Colectiva 9: `Allgather` de cajas, partículas y nodos de cada rango. |
 | `mpi/bh_mpi.py:215` | Arma un solo búfer con lo que va a cada rango remoto. |
+| `mpi/bh_mpi.py:221` | `PARALELO`: cada rango poda su árbol contra la caja de cada rango remoto. |
 | `mpi/bh_mpi.py:233` | Colectiva 10: `Alltoall` de cuentas, para reservar el búfer de recepción. |
 | `mpi/bh_mpi.py:237` | Colectiva 11: `Alltoallv` de las ramas podadas (sin Send/Recv). |
 | `mpi/bh_mpi.py:242` | Bytes del árbol completo: (nodos + partículas) × 32 de los otros rangos. |
 | `mpi/bh_mpi.py:250` | Un paso de fuerzas por rango: árbol local, poda, intercambio, aceleraciones. |
+| `mpi/bh_mpi.py:265` | `PARALELO`: cada rango calcula solo las aceleraciones de sus partículas. |
 | `mpi/bh_mpi.py:271` | Árbol con lo propio + lo recibido; recorrido solo para las propias. |
 | `mpi/bh_mpi.py:281` | Dónde quedó cada partícula propia en el árbol combinado. |
 | `mpi/bh_mpi.py:304` | Al final, todo vuelve al orden de la entrada en el rango 0. |
