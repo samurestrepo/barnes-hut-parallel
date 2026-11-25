@@ -1,0 +1,15 @@
+datos,theta,dt,pasos,deriva,nota
+clusters_N2000_s42_v_m,0.0,2.5e-4,100,3.982e-04,igual a la suma directa (4.0e-4): el integrador está bien
+clusters_N2000_s42_v_m,0.1,2.5e-4,100,3.718e-04,
+clusters_N2000_s42_v_m,0.3,2.5e-4,100,1.899e-03,
+clusters_N2000_s42_v_m,0.5,2.5e-4,100,8.866e-03,parámetros de la prueba energia_movimiento
+clusters_N2000_s42_v_m,0.7,2.5e-4,100,1.920e-02,
+clusters_N2000_s42_v_m,0.5,1.0e-3,25,2.815e-03,mismo tiempo físico (0.025)
+clusters_N2000_s42_v_m,0.5,5.0e-4,50,7.611e-03,mismo tiempo físico (0.025)
+clusters_N2000_s42_v_m,0.5,1.25e-4,200,9.162e-03,mismo tiempo físico: no baja con dt -> error de fuerza de theta
+clusters_N2000_s42_v_m,0.5,2.5e-4,10,1.552e-05,crece con el colapso de los cúmulos fríos
+clusters_N2000_s42_v_m,0.5,2.5e-4,50,4.646e-04,
+corner_N2000_s42,1.0,2.5e-4,100,9.186e-03,theta=1 no explota (sin NaN/inf)
+corner_N2000_s42,0.5,2.5e-4,100,8.592e-04,
+uniform_N2000_s42_e (escala 10),0.5,1.0e-3,10,6.374e-11,posiciones en [0, 10]
+corner_N2000_s42_e (escala 10),0.5,2.5e-4,10,3.548e-08,posiciones en [0, 10]

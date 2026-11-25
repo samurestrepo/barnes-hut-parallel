@@ -1,0 +1,9 @@
+fase,promedio_s,por_paso_s,porcentaje_de_simulacion
+lectura,0.0927,0.00463,
+construccion,0.0552,0.00276,1.7
+ordenamiento,0.0932,0.00466,2.9
+recorrido,3.0544,0.15272,94.8
+integracion,0.0075,0.00037,0.2
+comunicacion,0.0000,0.00000,0.0
+total,3.3151,0.16576,
+simulacion(total-lectura),3.2225,0.16112,100.0
