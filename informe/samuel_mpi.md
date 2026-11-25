@@ -40,6 +40,7 @@ partículas, no trabajo: a 100 pasos, cuando el rincón colapsa, los rangos van 
 **Hallazgo con Microsoft MPI (Windows).** Con más rangos que núcleos, 8 rangos tardaban 9.6 s,
 8 de ellos en "comunicación". Hipótesis: los rangos que esperan en una colectiva hacen espera activa
 y le quitan CPU a los que calculan. Lo medido es que `MPICH_PROGRESS_SPIN_LIMIT=16` (arriba del
-archivo) lo baja a 2.27 s. *(Confirmar si pasa algo parecido con OpenMPI en `results/demo_pc/`.)*
+archivo) lo baja a 2.27 s. Con Open MPI en el computador de la demo no aparece: con 32 rangos en
+16 hilos la comunicación crece con la sobresuscripción (0.71 s con N = 20 000), sin ese salto.
 
 *(Escalado en el computador de la demo: ver Mediciones comunes.)*

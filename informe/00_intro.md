@@ -28,7 +28,7 @@ por lenguaje: `py_core/` (Python con Numba, sin paralelismo propio) para multipr
 
 - **Hojas de hasta 8 partículas** en lugar de una: con 21 bits por eje dos partículas muy cercanas
   pueden compartir código y no se podrían separar; además, menos nodos significa menos memoria y
-  un recorrido más corto. Dentro de una hoja la fuerza se suma partícula por partícula.
+  un recorrido más corto. Una hoja que se abre se suma partícula por partícula (en C siempre; ver Verificación).
 - **20 pasos para medir**, reportando tiempo por paso, en lugar de 100; los ensayos de balanceo
   sí usan 100 pasos. *(Pendiente de confirmar con el profesor.)*
 - **dt = 2.5e-4 con distribuciones concentradas** (`corner`, `clusters`): con dt = 0.001 la energía
