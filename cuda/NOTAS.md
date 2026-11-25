@@ -32,7 +32,7 @@ Cada fase se mide con un par de `cudaEvent` (`empezar` / `terminar`, `:66`): el 
 **Decisiones y por qué:**
 - **float32 en la GPU, double en la CPU**: la T4 hace FP32 mucho más rápido que FP64. El verificador usa umbrales de float32 (`--float32`). Los códigos Morton se calculan en double (`a_entero_gpu`) para que la celda de cada partícula coincida con la del árbol, que se arma en double.
 - **`ORDEN_HILOS`** (`:39`, y la variable de entorno `ORDEN_HILOS=morton|original`): con `morton`, el hilo t atiende a la t-ésima partícula en orden Morton, así que los 32 hilos de un warp son vecinos en el espacio, abren casi las mismas celdas y el warp casi no diverge. Con `original`, el hilo t atiende a la partícula de id t (`hilo_a_particula`, `:108`), que está en cualquier parte: los hilos del warp recorren el árbol distinto y el warp tarda lo del más lento. La diferencia se ve en la fase `recorrido` del notebook.
-- **Árbol en la CPU**: el enunciado pide árbol aplanado, partículas ordenadas y recorrido sin recursión, pero no dice dónde se construye. Está preguntado al profesor; el plan B es construirlo en la GPU (ver DISEÑO.md).
+- **Árbol en la CPU**: el enunciado pide árbol aplanado, partículas ordenadas y recorrido sin recursión, pero no dice dónde se construye. **Resuelto:** el profesor confirmó el 2026-11-25 que construir el octree en la CPU es aceptable (no exige construirlo en la GPU); el plan B de DISEÑO.md ya no hace falta.
 - **Sin memoria compartida ni `__syncthreads()`**: cada hilo tiene su pila local y escribe solo su partícula. Por eso `racecheck` no tiene nada que revisar y la prueba que importa es `memcheck`.
 - **`REVISAR(...)`** envuelve cada llamada de CUDA y `cudaGetLastError()` va después de cada kernel: un error se reporta con archivo y línea en vez de dar resultados basura.
 
@@ -45,7 +45,7 @@ Cada fase se mide con un par de `cudaEvent` (`empezar` / `terminar`, `:66`): el 
 - Modificaciones de la demo: `ORDEN_HILOS`, `--workers`, `--theta`.
 
 **Dudas abiertas:**
-- ¿Acepta el profesor el árbol en la CPU?
+- ~~¿Acepta el profesor el árbol en la CPU?~~ Resuelto: sí (confirmado por el profesor el 2026-11-25).
 - ~~Resultados del notebook pendientes~~: listos, ver abajo.
 
 ---
@@ -81,4 +81,4 @@ Cada fase se mide con un par de `cudaEvent` (`empezar` / `terminar`, `:66`): el 
 - Por qué 64/128/256 da casi igual.
 
 **Dudas abiertas:**
-- ¿Acepta el profesor el árbol en la CPU? (correo enviado el 25 de noviembre).
+- ~~¿Acepta el profesor el árbol en la CPU? (correo enviado el 25 de noviembre).~~ Resuelto: confirmado por el profesor el 2026-11-25; el enunciado no exige construir el octree en la GPU.
