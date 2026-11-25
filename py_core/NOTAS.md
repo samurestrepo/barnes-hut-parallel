@@ -63,3 +63,5 @@ Bitácora para estudiar en otro chat. Las entradas nuevas van al final.
 **Dudas abiertas:**
 - Umbral de `energia_movimiento`: se propone 2e-2 en `CONTRATO_DUDAS.md`. Mientras no se cambie, S2, S3 y S4 marcan FALLA en esa prueba con el mismo valor (≈ 8.9e-3).
 - `HOJA_MAX` y `TOL_CAJA` no son perillas de la demo; se dejan arriba del archivo por si se quieren probar.
+
+**Actualización (2026-11-24, después de S6):** Samuel aprobó el umbral de 2e-2 para `energia_movimiento`. Se fijó en `common/verify.py:51` y la duda quedó resuelta en `CONTRATO_DUDAS.md`. Con él, S2 PASA las 5 pruebas (8.87e-3 < 2e-2) y el leapfrog sin segundo medio kick sigue fallando (2.02e-1). `CONTRATO.md` todavía dice 1e-3: hay que actualizarlo después de avisar a Sebastián.
