@@ -37,7 +37,7 @@ from directo import FASES, escribir_salidas  # noqa: E402
 from fisica import leer_particulas  # noqa: E402
 
 # ----------------------------------------------------------------- perillas de la demo
-TROZOS_POR_PROCESO = 6   # 4–8: más trozos = mejor balanceo con corner, más tareas que enviar
+TROZOS_POR_PROCESO = 6   # 4–8: más trozos = balanceo más fino (si un trozo cuesta más), más tareas que enviar
 MODO_ARBOL = "shared"    # por defecto (--tree shared|local)
 
 # Estado de cada trabajador (un proceso aparte, así que no se comparte con nadie).
