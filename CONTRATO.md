@@ -59,7 +59,7 @@ Ojo: casi todas las versiones reordenan las partículas por Morton. Hay que guar
 | Fuerzas, Barnes-Hut | `uniform`, N = 2000, θ = 0.5 | mediana del error relativo < 1e-2 |
 | Trayectoria | `uniform`, N = 2000, θ = 0, 10 pasos | `verify.py` integra los mismos 10 pasos con suma directa y compara `final.txt` **posición por posición**: error máximo < 1e-6 (float64) o < 1e-3 (CUDA). Detecta un integrador mal hecho y un orden de salida equivocado |
 | Energía, reposo | `uniform`, N = 2000, θ = 0, 100 pasos | deriva < 1e-5 (float64) o < 1e-3 (CUDA) |
-| Energía, en movimiento | `clusters` con velocidades y masas aleatorias, N = 2000, θ = 0.5, dt = 2.5e-4, 100 pasos | deriva < 1e-3 (suposición: ajustarlo el mié 25 con S2) |
+| Energía, en movimiento | `clusters` con velocidades y masas aleatorias, N = 2000, θ = 0.5, dt = 2.5e-4, 100 pasos | deriva < 2e-2 (float64 y float32). Fijado el 24-nov con S2: Barnes-Hut de monopolo con θ = 0.5 da ≈ 8.9e-3 por el error de la aproximación (con θ = 0, 4.0e-4, como la suma directa); el leapfrog sin segundo medio kick da 2.0e-1 y sigue fallando. Ver `CONTRATO_DUDAS.md` |
 
 Por qué se endureció (auditoría): con la nube uniforme en reposo, 100 × 0.001 = 0.1 unidades de tiempo y el colapso tarda unas 0.5, así que las partículas casi no se mueven. Con el umbral anterior de 1e-2 pasaban un leapfrog sin el segundo medio kick (5.6e-3) y hasta Euler explícito (2.2e-4); el correcto da 3.4e-8. Además, la energía no depende del orden de las partículas, por eso ahora se compara la trayectoria. `verify.py` también imprime la deriva de cualquier archivo, incluida la distribución de la demo.
 
