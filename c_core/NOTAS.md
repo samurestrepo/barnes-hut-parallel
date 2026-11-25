@@ -22,14 +22,16 @@ Bitácora de lo que se construyó, para estudiarlo. Las entradas nuevas van al f
 | fuerzas_bh | PASA | 1.7e-3 | 1e-2 |
 | trayectoria | PASA | 2.8e-17 | 1e-6 |
 | energia_reposo | PASA | 3.4e-8 | 1e-5 |
-| energia_movimiento | FALLA | 6.1e-3 | 1e-3 |
+| energia_movimiento | PASA | 6.1e-3 | 2e-2 |
 
-`energia_movimiento` falla por el umbral, no por un error de código (ver `CONTRATO_DUDAS.md`, 24-nov, C1):
+`energia_movimiento` se corrió primero con el umbral viejo (1e-3) y FALLABA con 6.1e-3. No era error de código, y el 24-nov Samuel subió el umbral a 2e-2 (ver `CONTRATO_DUDAS.md`, fila S2). Las mediciones de C1 que lo respaldan:
 - con θ = 0 la deriva es 3.982e-4, **idéntica** a la de `directo.py`;
 - con `--directa` también da 3.982e-4;
 - las fuerzas con θ = 0.5 en esa distribución tienen mediana 2.4e-3 y máximo 1.2% (correctas para θ = 0.5);
 - dividir dt a la mitad no cambia la deriva (6.4e-3), así que no es el integrador: es el error de aproximar celdas;
 - con θ = 0.3 baja a 6.8e-4.
+
+C da 6.1e-3 y Python (S2) 8.9e-3: los dos están muy por debajo de 2e-2 y del 2.0e-1 del leapfrog sin segundo medio kick.
 
 Otras pruebas: θ = 1.0 con `uniform` 100 pasos da deriva 1.3e-6 (no explota). `corner` con N = 20 000, posiciones fuera de [0, 1] (`--escala 5`) y N = 200 000 corren sin errores. Con `-fsanitize=address,undefined` no hay errores de memoria. N = 200 000: ≈ 2.9 s por paso (5.5 s de recorrido en 2 pasos + el paso 0), y el recorrido es el 90% del tiempo.
 
@@ -52,5 +54,4 @@ Otras pruebas: θ = 1.0 con `uniform` 100 pasos da deriva 1.3e-6 (no explota). `
 - Dónde se paraleliza después (marcas `PARALELO`): códigos (`bh_arbol.c:60`), construcción de hijos (`bh_arbol.c:168`) y aceleraciones (`bh_fuerzas.c:60`). En las aceleraciones no hay carrera: cada `i` lee el árbol y escribe solo `ax[i]`, `ay[i]`, `az[i]`.
 - Aquí no hay concurrencia ni deadlocks: es la versión secuencial.
 
-**Dudas abiertas:**
-- Umbral de `energia_movimiento` con θ = 0.5 (anotado en `CONTRATO_DUDAS.md`). S2 debería ver lo mismo en Python.
+**Dudas abiertas:** ninguna (el umbral de `energia_movimiento` quedó resuelto en 2e-2).

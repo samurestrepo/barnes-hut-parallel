@@ -95,12 +95,19 @@ uint64_t codigo_morton(double x, double y, double z, Caja caja);
 void     calcular_codigos(Particulas *p, Caja caja);
 void     ordenar_por_morton(Particulas *p);
 void     construir_arbol(Arbol *a, const Particulas *p, Caja caja);
-void     aceleracion_de(const Arbol *a, const Particulas *p, int i, double theta, double eps,
-                        double *ax, double *ay, double *az);
+long     aceleracion_de(const Arbol *a, const Particulas *p, int i, double theta, double eps,
+                        double *ax, double *ay, double *az);   /* devuelve las interacciones sumadas */
 void     calcular_aceleraciones(const Arbol *a, Particulas *p, double theta, double eps);
 void     suma_directa(Particulas *p, double eps);
 void     medio_kick(Particulas *p, double dt);
 void     drift(Particulas *p, double dt);
 void     liberar_arbol(Arbol *a);
+
+/* piezas del árbol que c_omp/ reutiliza para construir en paralelo */
+int      octante(uint64_t codigo, int nivel);
+int      fin_de_octante(const Particulas *p, int desde, int fin, int nivel, int o);
+void     reservar_nodos(Arbol *a, int capacidad);
+void     resumir_hoja(Arbol *a, int k, const Particulas *p);
+void     resumir_interno(Arbol *a, int k);
 
 #endif

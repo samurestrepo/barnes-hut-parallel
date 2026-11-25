@@ -24,30 +24,35 @@ static int celda_contiene(const Arbol *a, int k, double x, double y, double z) {
 }
 
 /* Hoja: se suman sus partículas una por una, saltándose a la propia i. */
-static void sumar_hoja(const Arbol *a, int k, const Particulas *p, int i, double eps2,
-                       double *ax, double *ay, double *az) {
+static int sumar_hoja(const Arbol *a, int k, const Particulas *p, int i, double eps2,
+                      double *ax, double *ay, double *az) {
     for (int j = a->inicio[k]; j < a->inicio[k] + a->cuenta[k]; j++) {
         if (j == i) continue;
         sumar_atraccion(p->x[j] - p->x[i], p->y[j] - p->y[i], p->z[j] - p->z[i], p->m[j], eps2, ax, ay, az);
     }
+    return a->cuenta[k] - (i >= a->inicio[k] && i < a->inicio[k] + a->cuenta[k]);
 }
 
 /* Aceleración de la partícula i recorriendo el árbol SIN recursión, con una pila explícita.
- * Es la misma forma que tendrá el kernel de CUDA (C3), donde la recursión es cara. */
-void aceleracion_de(const Arbol *a, const Particulas *p, int i, double theta, double eps,
+ * Es la misma forma que tendrá el kernel de CUDA (C3), donde la recursión es cara.
+ * Devuelve cuántas interacciones sumó: mide el TRABAJO de cada partícula (en un cúmulo
+ * se abren más celdas), que es lo que muestra el desbalance en c_omp/ (workers.csv). */
+long aceleracion_de(const Arbol *a, const Particulas *p, int i, double theta, double eps,
                     double *ax, double *ay, double *az) {
     int pila[PILA_MAX], tope = 0;
+    long interacciones = 0;
     double eps2 = eps * eps, xi = p->x[i], yi = p->y[i], zi = p->z[i];
     *ax = *ay = *az = 0.0;
     pila[tope++] = 0;                                       /* la raíz */
     while (tope > 0) {
         int k = pila[--tope];
-        if (a->es_hoja[k]) { sumar_hoja(a, k, p, i, eps2, ax, ay, az); continue; }
+        if (a->es_hoja[k]) { interacciones += sumar_hoja(a, k, p, i, eps2, ax, ay, az); continue; }
         double dx = a->cmx[k] - xi, dy = a->cmy[k] - yi, dz = a->cmz[k] - zi;
         double distancia = sqrt(dx * dx + dy * dy + dz * dz);
         double lado = 2.0 * a->mitad[k];
         if (!celda_contiene(a, k, xi, yi, zi) && lado < theta * distancia) {
             sumar_atraccion(dx, dy, dz, a->masa[k], eps2, ax, ay, az);   /* lejos: una sola masa */
+            interacciones++;
             continue;
         }
         for (int o = 0; o < 8; o++) {                       /* cerca: se abre la celda */
@@ -55,6 +60,7 @@ void aceleracion_de(const Arbol *a, const Particulas *p, int i, double theta, do
             if (h != SIN_HIJO) pila[tope++] = h;
         }
     }
+    return interacciones;
 }
 
 /* PARALELO (en C2 con schedule(runtime), en C3 un hilo de GPU por partícula):

@@ -65,7 +65,7 @@ void calcular_codigos(Particulas *p, Caja caja) {
 
 /* Octante (0..7) de un código en un nivel: nivel 0 = hijos de la raíz = 3 bits más altos.
  * El octante es (bit x, bit y, bit z) = 4*bx + 2*by + bz. */
-static int octante(uint64_t codigo, int nivel) {
+int octante(uint64_t codigo, int nivel) {
     int corrimiento = 3 * (BITS_EJE - 1 - nivel);
     return (int)((codigo >> corrimiento) & 7);
 }
@@ -105,10 +105,11 @@ void ordenar_por_morton(Particulas *p) {
 
 /* ============================================================ árbol aplanado */
 
-/* Duplica la capacidad de todos los arreglos del árbol. Secuencial: en C2 los nodos se
- * reservan antes de repartir el trabajo, porque realloc entre hilos sería una carrera. */
-static void crecer_arbol(Arbol *a) {
-    int cap = a->capacidad < 64 ? 64 : 2 * a->capacidad;
+/* Deja espacio para al menos `cap` nodos en todos los arreglos del árbol. Secuencial:
+ * en C2 se llama ANTES de repartir el trabajo, porque realloc entre hilos sería una
+ * carrera (un hilo movería los arreglos mientras otro escribe en ellos). */
+void reservar_nodos(Arbol *a, int cap) {
+    if (cap <= a->capacidad) return;
     size_t d = (size_t)cap * sizeof(double), e = (size_t)cap * sizeof(int);
     a->hijos   = agrandar(a->hijos, 8 * e);
     a->inicio  = agrandar(a->inicio, e);  a->cuenta = agrandar(a->cuenta, e);
@@ -117,6 +118,11 @@ static void crecer_arbol(Arbol *a) {
     a->cx  = agrandar(a->cx, d);  a->cy  = agrandar(a->cy, d);  a->cz  = agrandar(a->cz, d);
     a->mitad = agrandar(a->mitad, d);
     a->capacidad = cap;
+}
+
+/* Duplica la capacidad cuando el secuencial se queda sin espacio. */
+static void crecer_arbol(Arbol *a) {
+    reservar_nodos(a, a->capacidad < 64 ? 64 : 2 * a->capacidad);
 }
 
 /* Crea un nodo vacío para el rango [inicio, inicio+cuenta) y devuelve su índice. */
@@ -130,7 +136,7 @@ static int nuevo_nodo(Arbol *a, int inicio, int cuenta, double cx, double cy, do
 }
 
 /* Masa y centro de masa de una hoja: suma directa de sus partículas. */
-static void resumir_hoja(Arbol *a, int k, const Particulas *p) {
+void resumir_hoja(Arbol *a, int k, const Particulas *p) {
     double M = 0, sx = 0, sy = 0, sz = 0;
     for (int j = a->inicio[k]; j < a->inicio[k] + a->cuenta[k]; j++) {
         M += p->m[j]; sx += p->m[j] * p->x[j]; sy += p->m[j] * p->y[j]; sz += p->m[j] * p->z[j];
@@ -139,7 +145,7 @@ static void resumir_hoja(Arbol *a, int k, const Particulas *p) {
 }
 
 /* Masa y centro de masa de un nodo interno: a partir de los resúmenes de sus hijos. */
-static void resumir_interno(Arbol *a, int k) {
+void resumir_interno(Arbol *a, int k) {
     double M = 0, sx = 0, sy = 0, sz = 0;
     for (int o = 0; o < 8; o++) {
         int h = a->hijos[8 * k + o];
@@ -153,14 +159,21 @@ static void resumir_interno(Arbol *a, int k) {
 static int construir_nodo(Arbol *a, const Particulas *p, int inicio, int cuenta, int nivel,
                           double cx, double cy, double cz, double mitad);
 
-/* Parte el rango del nodo k en sus 8 octantes. Como las partículas están ordenadas por
- * Morton, cada octante es un tramo contiguo: basta avanzar mientras el octante no cambie. */
+/* Avanza desde `desde` mientras las partículas sigan en el octante o: devuelve dónde termina.
+ * Como están ordenadas por Morton, cada octante es un tramo contiguo. */
+int fin_de_octante(const Particulas *p, int desde, int fin, int nivel, int o) {
+    int j = desde;
+    while (j < fin && octante(p->codigo[j], nivel) == o) j++;
+    return j;
+}
+
+/* Parte el rango del nodo k en sus 8 octantes (un tramo contiguo cada uno). */
 static void construir_hijos(Arbol *a, int k, const Particulas *p, int nivel) {
     int j = a->inicio[k], fin = a->inicio[k] + a->cuenta[k];
     double h = 0.5 * a->mitad[k];
     for (int o = 0; o < 8; o++) {
         int desde = j;
-        while (j < fin && octante(p->codigo[j], nivel) == o) j++;
+        j = fin_de_octante(p, desde, fin, nivel, o);
         if (j == desde) continue;                       /* octante vacío */
         double hx = a->cx[k] + ((o & 4) ? h : -h);      /* bit x del octante */
         double hy = a->cy[k] + ((o & 2) ? h : -h);      /* bit y */
