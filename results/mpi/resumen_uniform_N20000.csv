@@ -1,0 +1,5 @@
+modo,workers,corridas,total_s,por_paso_s,speedup,eficiencia,lectura,construccion,ordenamiento,recorrido,integracion,comunicacion
+cantidad,1,2,3.7450,0.17971,0.885,0.885,0.1507,0.1995,0.0385,3.1861,0.0372,0.0226
+cantidad,2,2,2.5060,0.12053,1.323,0.661,0.0954,0.1683,0.0323,2.0688,0.0249,0.1352
+cantidad,4,2,2.0852,0.09906,1.590,0.397,0.1040,0.2477,0.0334,1.5379,0.0158,0.2989
+cantidad,8,2,2.2732,0.10312,1.458,0.182,0.2109,0.3478,0.0294,0.9718,0.0095,0.9359
