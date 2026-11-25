@@ -74,3 +74,17 @@ Crear el Pool (`crear_pool` en times.csv, fuera de `total`): shared 1.8 / 2.0 / 
 **Dudas abiertas:**
 - Umbral de `energia_movimiento` (igual que S2).
 - En el computador de la demo, si es Linux/WSL, los procesos se crean con *fork* y `crear_pool` debería bajar mucho; conviene medirlo allá.
+
+
+---
+
+## S6 — guía e informe (2026-11-24)
+
+**Archivos creados:** `py_mp/GUIA.md` (una página, formato de 5 puntos de DISEÑO), `informe/samuel_mp.md`, `results/mp/monitor_cpu.csv` (CPU por proceso medida con `wmic`), `results/mp/corner_N20000_shared_w4_trozos1_{times,workers}.csv`.
+
+**Correcciones a lo que se dijo en S3 (medido en S6):**
+- En S3 se escribió que, con trozos de igual número de partículas, los del rincón denso de `corner` tardan más y que `imap_unordered` lo compensa. Medido con `TROZOS_POR_PROCESO = 1` (un trozo por proceso, reparto estático; se cambió la constante en memoria, sin tocar el archivo): los 4 trabajadores tardan 1.82–1.84 s y hacen 60.4–62.6 millones de interacciones, igual de parejo que con 6 trozos (total 2.26 s frente a 2.35 s). Con `corner` los 4 trozos de N/4 en orden Morton caen casi enteros en el rincón y cuestan lo mismo. El reparto dinámico no hizo falta en este caso; se deja porque protege de distribuciones peores.
+
+**Qué se ve en el monitor** (detalle en `py_mp/GUIA.md`, punto 5): ≈ 5 s de arranque del Pool; después 4 procesos al 60–95% y el principal al 10–30%; igual con `uniform` y con `corner`.
+
+**Dudas abiertas:** las de S3.
