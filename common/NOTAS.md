@@ -77,7 +77,7 @@ También se probó a mano: una salida desordenada FALLA en la trayectoria (1.55)
 **Archivos creados:**
 - `common/bench.py`: bucle de mediciones. Corre una versión con 1, 2, 4, … hasta 2× los núcleos lógicos (`trabajadores_por_defecto`, `common/bench.py:32`), guarda la descripción del procesador en `results/lscpu.txt` (`guardar_lscpu`, `:42`) y escribe `results/<impl>/<etiqueta>_bench.csv` más las salidas de cada corrida en `results/<impl>/bench_<etiqueta>/`.
 - `common/plot.py`: lee uno o más `*_bench.csv` y dibuja tiempo, speedup, eficiencia y Karp-Flatt en un PNG de 4 paneles, más un CSV con los números (`<out>_escalado.png/.csv`).
-- `results/lscpu.txt`; `results/py_core/uniform_N200000_times.csv`; `results/mp/uniform_N{20000,200000}_{shared,local}_bench.csv`; `results/mpi/uniform_N{20000,200000}_cantidad_bench.csv`; las gráficas `results/mp/uniform_N*_escalado.png` (shared y local) y `results/mpi/uniform_N*_escalado.png` (las tres series), con sus CSV.
+- `results/lscpu.txt` (queda solo en local: el `.gitignore` excluye `results/**/*.txt`; su contenido está abajo, en "`lscpu`"); `results/py_core/uniform_N200000_times.csv`; `results/mp/uniform_N{20000,200000}_{shared,local}_bench.csv`; `results/mpi/uniform_N{20000,200000}_cantidad_bench.csv`; las gráficas `results/mp/uniform_N*_escalado.png` (shared y local) y `results/mpi/uniform_N*_escalado.png` (las tres series), con sus CSV.
 
 **Cómo lo usa Sebastián** (solo cambia el comando; `--workers` lo interpreta cada versión):
 ```

@@ -111,3 +111,16 @@ Con `espacio`, el rincón denso (95% de las partículas en [0, 0.05]³) cae ente
 - Umbral de `energia_movimiento` (igual que S2).
 - En WSL2/OpenMPI (el entorno del diseño) no se pudo probar; ahí se lanza con `mpirun --oversubscribe -n K` y la perilla de giro no aplica.
 - El rango 0 ordena con `argsort` de NumPy: con N = 200 000 se verá cuánto pesa (S5).
+
+
+---
+
+## S6 — guía e informe (2026-11-24)
+
+**Archivos creados:** `mpi/GUIA.md` (una página, formato de 5 puntos de DISEÑO), `informe/samuel_mpi.md`, `results/mpi/monitor_cpu.csv` (CPU por proceso medida con `wmic`, 4 rangos, N = 20 000, 100 pasos).
+
+**Qué se midió en el monitor:**
+- `uniform`/`cantidad`: 4 procesos al 60–95%. `corner`/`cantidad`: un rango siempre más bajo (35–55%), el de las partículas sueltas. `corner`/`espacio`: un solo proceso al ≈ 100% durante ≈ 30 s y los otros tres al 0–10%.
+- **Corrección a una suposición:** se esperaba que, sin límite de espera activa (`MPICH_PROGRESS_SPIN_LIMIT=0`), los rangos que esperan aparecieran al 100% en el monitor. Medido con 4 rangos y `corner`/`espacio`: aparecen al 10–20%, aunque la comunicación sube (10.9 s en 40 pasos). Por eso, en `informe/samuel_mpi.md`, la explicación del problema con 8 rangos queda como **hipótesis** (espera activa que quita CPU con más procesos que hilos de hardware); lo medido es que fijar el límite lo corrige (8 rangos: 9.6 s → 2.3 s en 20 pasos).
+
+**Dudas abiertas:** las de S4.
