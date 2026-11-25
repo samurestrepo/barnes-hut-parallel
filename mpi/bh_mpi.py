@@ -179,7 +179,7 @@ def repartir_desde_cero(todas, todos_codigos, particion, tiempos):
     comm.Scatter(cuentas, mia, root=0)
     locales = np.empty((mia[0], COLUMNAS))
     codigos = np.empty(mia[0], np.int64)
-    comm.Scatterv([todas, cuentas * COLUMNAS] if RANGO == 0 else None, locales, root=0)
+    comm.Scatterv([todas, cuentas * COLUMNAS] if RANGO == 0 else None, locales, root=0)  # PARALELO: cada rango recibe su trozo Morton
     comm.Scatterv([todos_codigos, cuentas] if RANGO == 0 else None, codigos, root=0)
     tiempos["comunicacion"] += time.perf_counter() - inicio
     return locales, codigos
@@ -218,7 +218,7 @@ def armar_envios(arbol, pos, m, cajas, theta):
     for r in range(P):
         if r == RANGO or cajas[r, 6] == 0:  # a uno mismo o a un rango vacío no se manda nada
             continue
-        puntos = puntos_para_caja(arbol, pos, m, cajas[r, 0:3].copy(), cajas[r, 3:6].copy(), theta)
+        puntos = puntos_para_caja(arbol, pos, m, cajas[r, 0:3].copy(), cajas[r, 3:6].copy(), theta)  # PARALELO: cada rango poda su árbol
         trozos.append(puntos.ravel())
         cuentas[r] = puntos.size
     envio = np.concatenate(trozos) if trozos else np.empty(0)
@@ -262,7 +262,7 @@ def fuerzas_locales(locales, codigos, caja, a, tiempos, cuenta):
     recibido = intercambiar(envio, cuentas_envio, tiempos)
     cuenta["bytes_recibidos"] += recibido.nbytes
     cuenta["bytes_arbol_completo"] += bytes_arbol_completo(cajas)
-    acc, interacciones = aceleraciones_con_recibido(pos, m, recibido, a, tiempos)
+    acc, interacciones = aceleraciones_con_recibido(pos, m, recibido, a, tiempos)  # PARALELO: cada rango, solo las suyas
     cuenta["interacciones"] += int(interacciones.sum())
     cuenta["particulas"] += len(pos)
     return acc
